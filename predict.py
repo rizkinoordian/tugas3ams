@@ -9,6 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
 
 from sklearn import preprocessing
 
@@ -25,7 +26,7 @@ dataArray = load_dataset('./datasets/train.gender.data')
 # Y adalah vector of integers or strings.
 
 # split data menjadi train dan test
-dataArray_train, dataArray_test = train_test_split(dataArray, test_size=0.5)
+dataArray_train, dataArray_test = train_test_split(dataArray, test_size=0.27)
 
 X_train = dataArray_train[:, 1:10]
 Y_train = dataArray_train[:, 10]
@@ -35,12 +36,14 @@ Y_train = dataArray_train[:, 10]
 model_DTC = DecisionTreeClassifier()
 model_GNB = GaussianNB()
 model_LR = LogisticRegression()
+model_MLP = MLPClassifier(solver='adam', hidden_layer_sizes=(100, 10, 5))
 
 # Training ! proses ini akan membutuhkan waktu, untuk estimasi parameter
 # tidak perlu disimpan karena menggunakan file yang sama
 model_DTC.fit(X_train, Y_train)
 model_GNB.fit(X_train, Y_train)
 model_LR.fit(X_train, Y_train)
+model_MLP.fit(X_train, Y_train)
 
 # -==Eval==-
 # Goal: Kita ingin evaluasi seberapa baik performa klasifikasi model kita?
@@ -52,6 +55,7 @@ Y_test = dataArray_test[:, 10]
 Y_predicted_dtc = model_DTC.predict(X_test)
 Y_predicted_gnb = model_GNB.predict(X_test)
 Y_predicted_lr = model_LR.predict(X_test)
+Y_predicted_mlp = model_MLP.predict(X_test)
 
 # hitung score, bandingkan hasil label prediksi, dengan label sesungguhnya
 # di testing data
@@ -59,6 +63,7 @@ Y_predicted_lr = model_LR.predict(X_test)
 accuracy_dtc = accuracy_score(Y_test, Y_predicted_dtc)
 accuracy_gnb = accuracy_score(Y_test, Y_predicted_gnb)
 accuracy_lr = accuracy_score(Y_test, Y_predicted_lr)
+accuracy_mlp = accuracy_score(Y_test, Y_predicted_mlp)
 
 # menentukan model mana yang terbaik
 best_model = model_DTC
@@ -66,15 +71,28 @@ if accuracy_dtc < accuracy_gnb:
     best_model = model_GNB
     if accuracy_gnb < accuracy_lr:
         best_model = model_LR
-        print ('we are using LR with accuracy: ', accuracy_lr)
+        print ('we are using LR!')
         pass
-    print ('we are using GNB with accuracy: ', accuracy_gnb)
+        if accuracy_lr < accuracy_mlp:
+            best_model = model_MLP
+            print ('we are using MLP!')
+            pass
+        pass
+    elif accuracy_gnb < accuracy_mlp:
+        best_model = model_MLP
+        print ('we are using MLP!')
+        pass
+    print ('we are using GNB!')
 elif accuracy_dtc < accuracy_lr:
     best_model = model_LR
-    print ('we are using LR with accuracy: ', accuracy_lr)
+    print ('we are using LR!')
+elif accuracy_dtc < accuracy_mlp:
+    best_model = model_MLP
+    print ('we are using MLP!')
 
-if best_model == model_DTC:
-    print ('we are using DTC with accuracy: ', accuracy_dtc)
+
+print ('accuracy (DT, GNB, LR, MLP): ({0}, {1}, {2}, {3})'
+       .format(accuracy_dtc, accuracy_gnb, accuracy_lr, accuracy_mlp))
 
 # -==Predict==-
 # Goal: Kita ingin menggunakan model yang sudah dibuat untuk prediksi
