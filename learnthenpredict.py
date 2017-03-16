@@ -15,7 +15,7 @@ from sklearn import preprocessing
 
 # kita load training data untuk membentu model classification
 # dataArray dalam bentuk numpy array 2D (num_sample x num_feature)
-dataArray = load_dataset('./train.gender.data')
+dataArray = load_dataset('./datasets/train.gender.data')
 
 # kita pisah antara Fitur dan Class
 # X merupakan kumpulan fitur untuk setiap instance, kolom indeks 1 - 9
@@ -47,14 +47,16 @@ loaded_model_gnb = load_model('gnb.model')
 loaded_model_lr = load_model('lr.model')
 
 # kita coba prediksi test file, yang belum diketahui labelnya
-test_data = load_dataset('./test.gender.nolabel.data')
+test_data = load_dataset('./datasets/test.gender.nolabel.data')
 test_data = test_data[:,1:10]
 
 # with open('debug.txt', 'w') as f:
 #     print(test_data, file=f)
 
 # hasil prediksi ada di variable predicted_class
-predicted_class = loaded_model_dtc.predict(test_data)
+predicted_class_dtc = loaded_model_dtc.predict(test_data)
+predicted_class_gnb = loaded_model_gnb.predict(test_data)
+predicted_class_lr = loaded_model_lr.predict(test_data)
 
 # convert numpy array to text
-np.savetxt('hasil.txt', predicted_class, fmt='%s')
+np.savetxt('./predictresult/hasil_dtc.txt', predicted_class, fmt='%s')
