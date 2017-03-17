@@ -66,33 +66,48 @@ accuracy_lr = accuracy_score(Y_test, Y_predicted_lr)
 accuracy_mlp = accuracy_score(Y_test, Y_predicted_mlp)
 
 # menentukan model mana yang terbaik
-best_model = model_DTC
-if accuracy_dtc < accuracy_gnb:
-    best_model = model_GNB
-    if accuracy_gnb < accuracy_lr:
-        best_model = model_LR
-        print ('we are using LR!')
-        pass
-        if accuracy_lr < accuracy_mlp:
-            best_model = model_MLP
-            print ('we are using MLP!')
-            pass
-        pass
-    elif accuracy_gnb < accuracy_mlp:
-        best_model = model_MLP
-        print ('we are using MLP!')
-        pass
-    print ('we are using GNB!')
-elif accuracy_dtc < accuracy_lr:
-    best_model = model_LR
-    print ('we are using LR!')
-elif accuracy_dtc < accuracy_mlp:
-    best_model = model_MLP
-    print ('we are using MLP!')
+# best_model = model_DTC
+# if accuracy_dtc < accuracy_gnb:
+#     best_model = model_GNB
+#     if accuracy_gnb < accuracy_lr:
+#         best_model = model_LR
+#         print ('we are using LR!')
+#         pass
+#         if accuracy_lr < accuracy_mlp:
+#             best_model = model_MLP
+#             print ('we are using MLP!')
+#             pass
+#         pass
+#     elif accuracy_gnb < accuracy_mlp:
+#         best_model = model_MLP
+#         print ('we are using MLP!')
+#         pass
+#     print ('we are using GNB!')
+# elif accuracy_dtc < accuracy_lr:
+#     best_model = model_LR
+#     print ('we are using LR!')
+# elif accuracy_dtc < accuracy_mlp:
+#     best_model = model_MLP
+#     print ('we are using MLP!')
 
 
 print ('accuracy (DT, GNB, LR, MLP): ({0}, {1}, {2}, {3})'
        .format(accuracy_dtc, accuracy_gnb, accuracy_lr, accuracy_mlp))
+
+user_choice = raw_input('choose your model (A, B, C, etc): ')
+
+choosen_model = model_DTC
+if user_choice is 'B':
+    choosen_model = model_GNB
+    print('we are using GNB')
+elif user_choice is 'C':
+    choosen_model = model_LR
+    print('we are using LR')
+elif user_choice is 'D':
+    choosen_model = model_MLP
+    print('we are using MLP')
+else:
+    print('we are using DTC')
 
 # -==Predict==-
 # Goal: Kita ingin menggunakan model yang sudah dibuat untuk prediksi
@@ -103,7 +118,7 @@ test_data = load_dataset('./datasets/test.gender.nolabel.data')
 test_data = test_data[:, 1:10]
 
 # hasil prediksi ada di variable predicted_class
-predicted_class = best_model.predict(test_data)
+predicted_class = choosen_model.predict(test_data)
 
 # convert numpy array to text
 np.savetxt('./predictresult/hasil.txt', predicted_class, fmt='%s')
