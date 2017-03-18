@@ -10,6 +10,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score
 
 from sklearn import preprocessing
 
@@ -18,7 +19,7 @@ from sklearn import preprocessing
 
 # kita load training data untuk membentu model classification
 # dataArray dalam bentuk numpy array 2D (num_sample x num_feature)
-dataArray = load_dataset('./datasets/outputfinaltrain.txt')
+dataArray = load_dataset('outputconverttrain.txt')
 
 # kita pisah antara Fitur dan Class
 # X merupakan kumpulan fitur untuk setiap instance, kolom indeks 1 - 9
@@ -28,8 +29,8 @@ dataArray = load_dataset('./datasets/outputfinaltrain.txt')
 # split data menjadi train dan test
 dataArray_train, dataArray_test = train_test_split(dataArray, test_size=0.27)
 
-X_train = dataArray_train[:, 0:10]
-Y_train = dataArray_train[:, 10]
+X_train = dataArray_train[:, 0:26]
+Y_train = dataArray_train[:, 26]
 
 # Kita gunakan Algoritma Machine Learning Logistic Regression
 # untuk membangun model
@@ -48,8 +49,8 @@ model_MLP.fit(X_train, Y_train)
 # -==Eval==-
 # Goal: Kita ingin evaluasi seberapa baik performa klasifikasi model kita?
 
-X_test = dataArray_test[:, 0:10]
-Y_test = dataArray_test[:, 10]
+X_test = dataArray_test[:, 0:26]
+Y_test = dataArray_test[:, 26]
 
 # beri label testing data terlebih dahulu
 Y_predicted_dtc = model_DTC.predict(X_test)
@@ -114,11 +115,11 @@ else:
 # sebuah instance
 
 # kita coba prediksi test file, yang belum diketahui labelnya
-test_data = load_dataset('./datasets/outputfinaltest.txt')
-test_data = test_data[:, 0:10]
+test_data = load_dataset('outputconverttest.txt')
+test_data = test_data[:, 0:26]
 
 # hasil prediksi ada di variable predicted_class
 predicted_class = choosen_model.predict(test_data)
 
 # convert numpy array to text
-np.savetxt('./predictresult/hasil2.txt', predicted_class, fmt='%s')
+np.savetxt('hasilver2.txt', predicted_class, fmt='%s')
