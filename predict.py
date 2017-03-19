@@ -121,4 +121,4 @@ test_data = test_data[:, 0:10]
 predicted_class = choosen_model.predict(test_data)
 
 # convert numpy array to text
-np.savetxt('./predictresult/hasil2.txt', predicted_class, fmt='%s')
+np.savetxt('./predictresult/hasil4.txt', predicted_class, fmt='%s')

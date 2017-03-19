@@ -3,6 +3,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/*
+ * Kelas ini dibuat untuk menganalisa username pada data train
+ * Misalnya, diketahui username = ABBEF [A=1, B=2, E=1, F=1] & gender = male
+ * Menjadi 1,2,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,male
+ */
 
 public class converter {
 	public static void main(String[] args) throws IOException{
@@ -12,7 +17,7 @@ public class converter {
 		String str = "";
 		while((str=br.readLine())!=null && str.length()!=0){
 			String split[] = str.split(",");
-			int[] array = new int[26];
+			int[] array = new int[28];
 			
 			for(int i = 0, j = 1; i < split[0].length(); i++, j++){
 				if(split[0].substring(i, j).equalsIgnoreCase("A")){
@@ -65,13 +70,17 @@ public class converter {
 					array[23]++;
 				}else if(split[0].substring(i, j).equalsIgnoreCase("Y")){
 					array[24]++;
-				}else{
+				}else if(split[0].substring(i, j).equalsIgnoreCase("Z")){
 					array[25]++;
+				}else if(split[0].substring(i, j).equalsIgnoreCase("_")){
+					array[26]++;
+				}else{
+					array[27]++;
 				}
 			}
 			
 			String out = "";
-			for(int i = 0; i < 26; i++){
+			for(int i = 0; i < 28; i++){
 				if(out.equals("")){
 					out += array[i];
 				}else{

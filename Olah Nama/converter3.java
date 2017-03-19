@@ -9,21 +9,26 @@ import java.io.IOException;
 
 public class converter3 {
 	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader("train.gender.data"));
+		BufferedReader br2 = new BufferedReader(new FileReader("train.gender.data"));
+		BufferedReader br3 = new BufferedReader(new FileReader("scoreprediksitrain.txt"));
 		FileWriter writer = new FileWriter("outputfinaltrain.txt");
 		
 		String str = "";
-		while((str=br.readLine())!=null && str.length()!=0){
-			String[] split = str.split(",");
+		while((str=br3.readLine())!=null && str.length()!=0){
+			String str2 = br2.readLine();
+			String split1[] = str.split(" ");
+			String split2[] = str2.split(",");
 			String output = "";
-			if(split[10].equalsIgnoreCase("female")){
-				output = 1 + "," + split[1] + "," + split[2] + "," 
-			+ split[3] + "," + split[4] + "," + split[5] + "," + split[6]
-					+ "," + split[7] + "," + split[8]+ "," + split[9]+ "," + split[10];
-			}else{
-				output = 2 + "," + split[1] + "," + split[2] + "," 
-			+ split[3] + "," + split[4] + "," + split[5] + "," + split[6]
-					+ "," + split[7] + "," + split[8]+ "," + split[9]+ "," + split[10];
+			
+			double score = Double.parseDouble(split1[0]) * 100;
+			int bulat = (int) score;
+			
+			for(int i = 1; i < split2.length; i++){
+				if(output.isEmpty()){
+					output += bulat + "," + split2[i];
+				}else{
+					output += "," + split2[i];
+				}
 			}
 			
 			writer.append(output);

@@ -9,28 +9,25 @@ import java.io.IOException;
 
 public class converter2 {
 	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader("outputconverttest.txt"));
 		BufferedReader br2 = new BufferedReader(new FileReader("test.gender.nolabel.data"));
+		BufferedReader br3 = new BufferedReader(new FileReader("scoreprediksitest.txt"));
 		FileWriter writer = new FileWriter("outputfinaltest.txt");
 		
 		String str = "";
-		while((str=br.readLine())!=null && str.length()!=0){
+		while((str=br3.readLine())!=null && str.length()!=0){
 			String str2 = br2.readLine();
-			String split[] = str2.split(",");
-			String cat = "";
+			String split1[] = str.split(" ");
+			String split2[] = str2.split(",");
 			String output = "";
 			
-			if(str.equalsIgnoreCase("female")){
-				cat = "1";
-			}else{
-				cat = "2";
-			}
+			double score = Double.parseDouble(split1[0]) * 100;
+			int bulat = (int) score;
 			
-			for(int i = 1; i < split.length; i++){
+			for(int i = 1; i < split2.length; i++){
 				if(output.isEmpty()){
-					output += cat + "," + split[i];
+					output += bulat + "," + split2[i];
 				}else{
-					output += "," + split[i];
+					output += "," + split2[i];
 				}
 			}
 			
